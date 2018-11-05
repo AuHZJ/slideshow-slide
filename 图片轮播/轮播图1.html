@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>轮播图</title>
+    <style type="text/css">
+        *{
+            box-sizing:border-box;
+        }
+        body{
+            width:100%;
+            overflow:hidden;
+        }
+        img{
+            width:700px;
+            height:290px;
+            display:inline-block;
+            position:absolute;
+            opacity:0;
+            transition:0.5s;
+        }
+        .out{
+            /* overflow:hidden; */
+            width:700px;
+            height:290px;
+            position:relative;
+            left:600px;
+        }
+        .out:hover .button-pre,
+        .out:hover .button-next{
+            opacity:1;
+        }
+        .button-pre,
+        .button-next{
+            transition:0.3s;
+            opacity:0;
+            cursor:pointer;
+            width:41px;
+            height:41px;
+            position:absolute;
+            border:none;
+            top:46%;
+            z-index:10;
+            outline:none;
+        }
+        .button-pre{
+            background:url('images/button.png') no-repeat;
+            left:10px;
+        }
+        .button-next{
+            background:url('images/button.png') no-repeat -51px 0px;
+            right:10px;
+        }
+        .dots{
+            position:absolute;
+            left:43%;
+            bottom:10px;
+            width:120px;
+            height:25px;
+        }
+        span{
+            cursor:pointer;
+            margin-left:4px;
+            display:inline-block;
+            width:10px;
+            height:10px;
+            border-radius:5px;
+            background:rgba(255,255,255);
+            opacity:0.3;
+            transition:0.5s;
+        }
+        .active{
+            opacity:1;
+        }
+    </style>
+</head>
+<body>
+    <div class="out">
+        <button type="button" onclick="pre()" class="button-pre"></button>
+        <button type="button" onclick="next()" class="button-next"></button>
+        <img src="images/4.jpg" alt="" class="active"/>
+        <img src="images/5.jpg" alt=""/>
+        <img src="images/6.jpg" alt=""/>
+        <img src="images/7.jpg" alt=""/>
+        <img src="images/8.jpg" alt=""/>
+        <img src="images/9.jpg" alt=""/>
+        <div class="dots">
+            <span class="active"></span>
+            <span class=""></span>
+            <span class=""></span>
+            <span class=""></span>
+            <span class=""></span>
+            <span class=""></span>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+
+    var i = 0;
+
+    var imgs = document.getElementsByTagName('img');
+    var dots = document.getElementsByTagName('span');
+    dotsOnclick();
+    var time = setInterval('next()', 2000); //开始计时
+
+    function loop(){
+        time = setInterval('next()', 2000);
+    }
+
+    function pre(){ //上一张
+        clearInterval(time); //暂停计时
+        dots[i].className = '';
+        i = (i-1+imgs.length)%imgs.length;
+        for(var t=0;t<dots.length;t++){
+            imgs[t].className = '';
+            dots[t].className = '';
+        }
+        dots[i].className = 'active';
+        imgs[i].className = 'active';
+        loop(); //重新开始计时
+    }
+
+    function next(){ //下一张
+        clearInterval(time); //暂停计时
+        dots[i].className = '';
+        i = (i+1)%imgs.length;
+        for(var t=0;t<dots.length;t++){
+            imgs[t].className = '';
+            dots[t].className = '';
+        }
+        dots[i].className = 'active';
+        imgs[i].className = 'active';
+        loop(); //重新开始计时
+    }
+
+    for(var t=0;t<dots.length;t++){
+        dots[t].index = t;
+    }
+
+    function dotsOnclick(){
+        for(var j=0;j<dots.length;j++){
+            dots[j].onclick = function(){
+                clearInterval(time); //暂停计时
+                for(var t=0;t<dots.length;t++){
+                    imgs[t].className = '';
+                    dots[t].className = '';
+                }
+                this.className = 'active';
+                imgs[this.index].className = 'active';
+                i = this.index;
+                loop(); //重新开始计时
+            }
+        }
+    }
+
+</script>
+</html>
